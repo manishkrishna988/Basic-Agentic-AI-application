@@ -14,17 +14,15 @@ openai_key = os.getenv("OPENAI_API_KEY")
 print("OPENAI_API_KEY:", openai_key)
 
 if not openai_key:
-    raise ValueError("❌ OPENAI_API_KEY not found. Check your .env file.")
+    raise ValueError("OPENAI_API_KEY not found. Check your .env file.")
 
-# Create ONE shared OpenAI model instance
+# Create one shared OpenAI model instance
 openai_model = OpenAIChat(
-    id="gpt-4o-mini",   # ✅ fast + cheap + supports tools
+    id="gpt-4o-mini",
     api_key=openai_key
 )
 
-# ---------------------------
 # Web Search Agent
-# ---------------------------
 web_search_agent = Agent(
     name="Web Search Agent",
     role="Search the web for information",
@@ -35,9 +33,7 @@ web_search_agent = Agent(
     markdown=True,
 )
 
-# ---------------------------
 # Finance Agent
-# ---------------------------
 finance_agent = Agent(
     name="Finance AI Agent",
     model=openai_model,
@@ -54,12 +50,10 @@ finance_agent = Agent(
     markdown=True,
 )
 
-# ---------------------------
-# Multi-Agent System
-# ---------------------------
+# Multi-modal AI agent configuration
 multi_ai_agent = Agent(
     team=[web_search_agent, finance_agent],
-    model=openai_model,   # ✅ IMPORTANT
+    model=openai_model,
     instructions=[
         "Always include sources",
         "Use tables to display the data"
@@ -68,9 +62,7 @@ multi_ai_agent = Agent(
     markdown=True,
 )
 
-# ---------------------------
 # Run Query
-# ---------------------------
 multi_ai_agent.print_response(
     "Summarize analyst recommendation and share the latest news for NVDA",
     stream=True,
